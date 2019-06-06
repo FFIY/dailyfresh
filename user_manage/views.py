@@ -8,8 +8,8 @@ import hashlib
 
 def index(request):
 
-    context = {}
-    return render(request, 'user_manage/index.html',context)
+    context = {'title':'天天生鲜-首页'}
+    return render(request, 'user_manage/../templates/index.html', context)
 
 
 def register(request):
@@ -70,10 +70,10 @@ def login(request):
 
 
 def info(request):
-    uname = request.session.get('uname','')
+    uname = request.COOKIES.get('uname','')
     try:
         user = UserInfo.objects.get(uname=uname)
-        user_email = user.uemail
+        user_email = user.email
     except UserInfo.DoesNotExist:
         user_email = ''
 
@@ -93,20 +93,34 @@ def order(request):
     return render(request,'user_manage/user_center_order.html',context)
 
 def site(request):
-    uname = request.session.get('uname','')
+    uname = request.COOKIES.get('uname','')
     try:
         user = UserInfo.objects.get(uname=uname)
-        user_email = user.uemail
+        user_email = user.email
     except UserInfo.DoesNotExist:
         user = None
         user_email = ''
     if request.method == 'POST':
         if user:
-            user.addressee = request.POST.get('addressee')
-            user.uadress = request.POST.get('uadress')
-            user.zipcode = request.POST.get('zipcode')
-            user.phone = request.POST.get('uphone')
-            user.save()
+            addressee = request.POST.get('addressee')
+            uadress = request.POST.get('uadress')
+            zipcode = request.POST.get('zipcode')
+            phone = request.POST.get('uphone')
+            print(addressee, uadress)
+            print(zipcode, phone)
+            if addressee and uadress and zipcode and phone:
+                try:
+                    UserAdress.objects.get(r_adress=uadress, r_user=addressee)
+                except UserAdress.DoesNotExist as e:
+                    newaddress = UserAdress(r_adress=uadress,zipcode=zipcode,r_user=addressee,r_phone=phone)
+                    newaddress.save()
+                else:
+                    newaddress = UserAdress.objects.get(r_adress=uadress,r_user=addressee,r_phone=phone)
+                user.addressee= newaddress
+                user.save()
+                return redirect('/user/site/')
+
+
     context = {'tittle':'用户中心','user':user}
     return render(request,'user_manage/user_center_site.html',context)
 

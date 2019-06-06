@@ -1,23 +1,14 @@
-{% extends 'base.html' %}
-{% block body %}
+{% extends 'base_user.html' %}
+{% block main_con %}
     {{ block.super }}
-
-    <div class="search_bar clearfix">
-		<a href="index.html" class="logo fl"><img src="images/logo.png"></a>
-		<div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;用户中心</div>
-		<div class="search_con fr">
-			<input type="text" class="input_text fl" name="" placeholder="搜索商品">
-			<input type="button" class="input_btn fr" name="" value="搜索">
-		</div>
-	</div>
 
 	<div class="main_con clearfix">
 		<div class="left_menu_con clearfix">
 			<h3>用户中心</h3>
 			<ul>
-				<li><a href="user_center_info.html" class="active">· 个人信息</a></li>
-				<li><a href="user_center_order.html">· 全部订单</a></li>
-				<li><a href="user_center_site.html">· 收货地址</a></li>
+				<li><a href="/user/info/" class="active">· 个人信息</a></li>
+				<li><a href="/user/order/">· 全部订单</a></li>
+				<li><a href="/user/site/">· 收货地址</a></li>
 			</ul>
 		</div>
 		<div class="right_content clearfix">
@@ -34,7 +25,7 @@
 				<div class="has_view_list">
 					<ul class="goods_type_list clearfix">
 				<li>
-					<a href="detail.html"><img src="images/goods/goods003.jpg"></a>
+					<a href="detail.html"><img src="/static/images/goods/goods003.jpg"></a>
 					<h4><a href="detail.html">大兴大棚草莓</a></h4>
 					<div class="operate">
 						<span class="prize">￥16.80</span>
@@ -86,4 +77,4 @@
 		</div>
 		</div>
 	</div>
-{% endblock body %}
+{% endblock main_con %}
