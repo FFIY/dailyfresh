@@ -93,7 +93,8 @@ def order(request):
     return render(request,'user_manage/user_center_order.html',context)
 
 def site(request):
-    uname = request.COOKIES.get('uname','')
+    print(dir(request))
+    uname = request.session.get('uname','')
     try:
         user = UserInfo.objects.get(uname=uname)
         user_email = user.email

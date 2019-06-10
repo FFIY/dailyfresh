@@ -22,7 +22,7 @@ class GoodInfo(models.Model):
     gclick = models.IntegerField()
     gintroduction = models.CharField(max_length= 250)
     stock = models.IntegerField()
-    gcontent = models.CharField(max_length=2000)
+    gcontent = models.TextField(blank=True)
     gadv = models.BooleanField(default=0)
     gtype = models.ForeignKey('GoodTypeInfo',on_delete=models.CASCADE)
 
