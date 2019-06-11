@@ -16,3 +16,5 @@ class UserAdress(models.Model):
     zipcode = models.CharField(max_length=6)
     r_user = models.CharField(max_length=32)
     r_phone = models.CharField(max_length=11,blank=True)
+
+
