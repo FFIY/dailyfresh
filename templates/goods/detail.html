@@ -1,5 +1,36 @@
 {% extends 'base_goods.html' %}
 
+
+{% block head %}
+    <script>
+        function add(){
+            num = parseFloat($('.num_show').val());
+            $('.num_show').val(num+1);
+            $('.num_show').blur();
+        }
+
+        function minus(){
+            num = parseFloat($('.num_show').val());
+            if (num < 1){
+                return ;
+            }
+            $('.num_show').val(num-1);
+            $('.num_show').blur();
+        }
+
+        $(function (){
+           $('.num_show').blur(function (){
+               num = parseFloat($('.num_show').val());
+               if (num < 1){
+                    num = 1;
+                }
+               price = parseFloat($('#gprice').text());
+               total = num * price;
+               $('#gprice').text(tocal.toFixed(2)+'元')
+;           })
+        });
+    </script>
+ {% endblock head %}
 {% block search %}
     <div class="search_bar clearfix">
 		<a href="index.html" class="logo fl"><img src="images/logo.png"></a>
@@ -21,16 +52,16 @@
 				<h1>全部商品分类</h1>
 				<span></span>
 				<ul class="subnav">
-					<li><a href="#" class="fruit">新鲜水果</a></li>
-					<li><a href="#" class="seafood">海鲜水产</a></li>
-					<li><a href="#" class="meet">猪牛羊肉</a></li>
-					<li><a href="#" class="egg">禽类蛋品</a></li>
-					<li><a href="#" class="vegetables">新鲜蔬菜</a></li>
-					<li><a href="#" class="ice">速冻食品</a></li>
+					<li><a href="/list/{{ 1 }}-{{ 1 }}-{{ 0 }}" class="fruit">新鲜水果</a></li>
+					<li><a href="{{ 2 }}-{{ 1 }}-{{ 0 }}" class="seafood">海鲜水产</a></li>
+					<li><a href="{{ 3 }}-{{ 1 }}-{{ 0 }}" class="meet">猪牛羊肉</a></li>
+					<li><a href="{{ 4 }}-{{ 1 }}-{{ 0 }}" class="egg">禽类蛋品</a></li>
+					<li><a href="{{ 5 }}-{{ 1 }}-{{ 0 }}" class="vegetables">新鲜蔬菜</a></li>
+					<li><a href="{{ 6 }}-{{ 1 }}-{{ 0 }}" class="ice">速冻食品</a></li>
 				</ul>
 			</div>
 			<ul class="navlist fl">
-				<li><a href="">首页</a></li>
+				<li><a href="/goods/index/">首页</a></li>
 				<li class="interval">|</li>
 				<li><a href="">手机生鲜</a></li>
 				<li class="interval">|</li>
@@ -42,13 +73,33 @@
 	<div class="breadcrumb">
 		<a href="#">全部分类</a>
 		<span>></span>
-		<a href="#">新鲜水果</a>
-		<span>></span>
-		<a href="#">商品详情</a>
+		<a href="/goods/list/{{ goodstype.id }}-{{ 1 }}-{{ 0 }}">新鲜水果{{ goodstype.title }}</a>
 	</div>
 
 	<div class="goods_detail_con clearfix">
-		<div class="goods_detail_pic fl"><img src="images/goods_detail.jpg"></div>
+		<div class="goods_detail_pic fl"><img src="/static/{{ goods.gpic }}"></div>
+        <div class="goods_detail_list fr">
+			<h3>{{ goods.gtitle }}</h3>
+			<p>{{ goods.gintroduction }}</p>
+			<div class="prize_bar">
+				<span class="show_pirze" id="gprice">¥<em>{{ goods.grpice }}</em></span>
+				<span class="show_unit">单  位：{{ goods.guntil }}</span>
+			</div>
+			<div class="goods_num clearfix">
+				<div class="num_name fl">数 量：</div>
+				<div class="num_add fl">
+					<input type="text" class="num_show fl" value="1">
+					<a href="javascript:add();" class="add fr">+</a>
+					<a href="javascript:minus();" class="minus fr">-</a>
+				</div>
+			</div>
+			<div class="total">总价：<em>{{ goods.gprice }}元</em></div>
+			<div class="operate_btn">
+				<a href="javascript:;" class="buy_btn">立即购买</a>
+				<a href="javascript:;" class="add_cart" id="add_cart">加入购物车</a>
+			</div>
+		</div>
+
 
 		<div class="goods_detail_list fr">
 			<h3>大兴大棚草莓</h3>

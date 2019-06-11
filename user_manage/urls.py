@@ -11,5 +11,5 @@ urlpatterns = [
     path('info/',views.info),
     path('order/',views.order),
     path('site/',views.site),
-
+    path('logout/',views.logout),
 ]
