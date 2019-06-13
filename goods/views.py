@@ -6,16 +6,33 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 # Create your views here.
 
 def index(request):
+    goodtypes = GoodTypeInfo.objects.all()
+    typeone = goodtypes[0].goodinfo_set.order_by('-id')[0:4]
+    typeone_h = goodtypes[0].goodinfo_set.order_by('-gclick')[0:4]
+    typetwo = goodtypes[1].goodinfo_set.order_by('-id')[0:4]
+    typetwo_h = goodtypes[1].goodinfo_set.order_by('-gclick')[0:4]
+    typethree = goodtypes[2].goodinfo_set.order_by('-id')[0:4]
+    typethree_h = goodtypes[2].goodinfo_set.order_by('-gclick')[0:4]
+    typefour = goodtypes[3].goodinfo_set.order_by('-id')[0:4]
+    typefour_h = goodtypes[3].goodinfo_set.order_by('-gclick')[0:4]
+    typefive = goodtypes[4].goodinfo_set.order_by('-id')[0:4]
+    typefive_h = goodtypes[4].goodinfo_set.order_by('-gclick')[0:4]
+    typesix = goodtypes[5].goodinfo_set.order_by('-id')[0:4]
+    typesix_h = goodtypes[5].goodinfo_set.order_by('-gclick')[0:4]
 
-    context = {}
-    return render(request,'goods/index.html',context)
+    context = {'title': '首页', 'locals': locals(), 't1': typeone, 't1h': typeone_h, 't2': typetwo, 't2h': typetwo_h,
+               't3': typethree, 't3h': typethree_h, 't4': typefour, 't4h': typefour_h, 't5': typefive,
+               't5h': typefive_h, 't6h': typesix_h,'t6':typesix
+               }
+    return render(request, 'goods/index.html', context)
+
 
 def detail(request, goodsid):
     goods = GoodInfo.objects.get(id=goodsid)
     goods.gclick += 1
     goods.save()
     news = goods.gtype.goodinfo_set.order_by('-id')[0:2]
-
+    print(news)
     # 记录用户最近浏览的5条记录
     goods_ids = request.COOKIES.get('goodsids','')
     if goods_ids:

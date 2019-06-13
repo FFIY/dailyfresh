@@ -14,7 +14,8 @@ def index(request):
     typefive_h = goodtypes[3].goodinfo_set.order_by('-gclick')[0:4]
     typesix = goodtypes[3].goodinfo_set.order_by('-id')[0:4]
     typesix_h = goodtypes[3].goodinfo_set.order_by('-gclick')[0:4]
-
+    print(typeone)
+    print(typeone_h)
     context = {'title':'首页','locals':locals(),'t1':typeone,'t1h':typeone_h,'t2':typetwo,'t2h':typetwo_h,
                't3':typethree,'t3h':typethree_h,'t4':typefour,'t4h':typefour_h,'th5':typefive,
                'th5h':typefive_h,'th6':typesix_h,
