@@ -35,7 +35,23 @@
             $('form').submit(function () {
 
             });
-        })
+
+            $('input[name=remember]').change(function () {
+
+                if($('input[name=remember]').prop('checked')){
+
+                    $('input[name=remember]').prop('value','1');
+                }else{
+                    $('input[name=remember]').prop('value','0');
+
+                }
+            });
+
+
+        });
+
+
+
     </script>
 {% endblock head %}
 {% block tittle %}{{ title }}{% endblock tittle %}
@@ -63,7 +79,7 @@
 						<div class="pwd_error">输入错误</div>
 						<div class="more_input clearfix">
 							<input type="checkbox" name="remember" value="1" checked="checked">
-							<label>记住用户名</label>
+							<label>一个月免登陆</label>
 							<a href="#">忘记密码</a>
 						</div>
 						<input type="submit" name="" value="登录" class="input_submit">

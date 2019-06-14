@@ -55,7 +55,7 @@ def login(request):
             if s1.hexdigest() == users[0].upassword:
                 red = HttpResponseRedirect('/user/info/')
                 if remember:
-                    red.set_cookie('uname', uname)
+                    red.set_cookie('uname', uname,max_age = 60*60*24*30)
                 else:
                     red.set_cookie('uname', '', max_age=-1)
 
