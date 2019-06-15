@@ -35,7 +35,7 @@ def detail(request, goodsid):
     print(news)
     # 记录用户最近浏览的5条记录
     goods_ids = request.COOKIES.get('goodsids','')
-    if goods_ids:
+    if not goods_ids:
         goods_ids = goodsid
     else:
         goods_ids = goods_ids.split(',')
@@ -45,7 +45,7 @@ def detail(request, goodsid):
         if len(goods_ids) > 5:
             goods_ids.pop()
         goods_ids = ','.join(goods_ids)
-
+    print('goods_id',goods_ids)
 
     context = {'title':goods.gtype.title,'goods':goods,
                'goodsid':goodsid,'news':news,

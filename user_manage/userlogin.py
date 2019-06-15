@@ -5,8 +5,11 @@ def login(func):
 
     def login_func(request, *args, **kwargs):
         if request.session.has_key('user_id'):
+            print('session', request.session['user_id'])
+            print(request.COOKIES)
             return func(request, *args, **kwargs)
         else:
+
             r = HttpResponseRedirect('/user/login/')
             r.set_cookie('url', request.get_full_path())
             return r

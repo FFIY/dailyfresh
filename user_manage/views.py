@@ -54,10 +54,12 @@ def login(request):
             s1 = hashlib.sha1(pwd.encode('utf-8'))
             if s1.hexdigest() == users[0].upassword:
                 red = HttpResponseRedirect('/user/info/')
-                if remember:
+                if int(remember):
                     red.set_cookie('uname', uname,max_age = 60*60*24*30)
+                    # red.set_cookie('user_id', uname,max_age = 60*60*24*30)
                 else:
-                    red.set_cookie('uname', '', max_age=-1)
+                    red.set_cookie('uname', uname, max_age=-1)
+                    # red.set_cookie('user_id', uname, max_age=-1)
 
                 request.session['user_name'] = uname
                 request.session['user_id'] = uname
@@ -81,7 +83,7 @@ def info(request):
     print(type(goods_ids),goods_ids)
     goods_list = []
     if goods_ids != '':
-        for i in goods_ids:
+        for i in goods_ids.split(','):
             goods_list.append(GoodInfo.objects.get(id=int(i)))
 
     try:
@@ -90,7 +92,7 @@ def info(request):
     except UserInfo.DoesNotExist:
         user_email = ''
 
-    context = {'tittle': '用户中心', 'user_email': user_email, 'user_name': uname,
+    context = {'title': '用户中心', 'user_email': user_email, 'user_name': uname,
                'goods_list':goods_list, 'request':request}
     return render(request, 'user_manage/user_center_info.html', context)
 

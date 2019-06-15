@@ -18,9 +18,11 @@ class GoodInfo(models.Model):
     gprice = models.DecimalField(max_digits=6,decimal_places=2)
     #商品的单位
     guntil = models.CharField(max_length=10,default='500g')
+    # 是否显示商品，逻辑删除
     isDelete = models.BooleanField(default=0)
     gclick = models.IntegerField(default=0)
     gintroduction = models.CharField(max_length= 250)
+    # 存货
     stock = models.IntegerField(default=0)
     gcontent = models.TextField(blank=True)
     gadv = models.BooleanField(default=0)

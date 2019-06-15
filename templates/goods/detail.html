@@ -4,13 +4,13 @@
 {% block head %}
     <script>
         function add(){
-            num = parseFloat($('.num_show').val());
+            num = parseInt($('.num_show').val());
             $('.num_show').val(num+1);
             $('.num_show').blur();
         }
 
         function minus(){
-            num = parseFloat($('.num_show').val());
+            num = parseInt($('.num_show').val());
             if (num < 1){
                 return ;
             }
@@ -20,13 +20,14 @@
 
         $(function (){
            $('.num_show').blur(function (){
-               num = parseFloat($('.num_show').val());
+               num = parseInt($('.num_show').val());
                if (num < 1){
                     num = 1;
                 }
-               price = parseFloat($('#gprice').text());
+               price = parseFloat($('#gprice em').text());
+               $('.num_show').val(num);
                total = num * price;
-               $('#gprice').text(tocal.toFixed(2)+'元')
+               $('#total').text(total.toFixed(2)+'元')
 ;           })
         });
         
@@ -55,12 +56,12 @@
 				<h1>全部商品分类</h1>
 				<span></span>
 				<ul class="subnav">
-					<li><a href="/list/{{ 1 }}-{{ 1 }}-{{ 0 }}" class="fruit">新鲜水果</a></li>
-					<li><a href="/list/{{ 2 }}-{{ 1 }}-{{ 0 }}" class="seafood">海鲜水产</a></li>
-					<li><a href="/list/{{ 3 }}-{{ 1 }}-{{ 0 }}" class="meet">猪牛羊肉</a></li>
-					<li><a href="/list/{{ 4 }}-{{ 1 }}-{{ 0 }}" class="egg">禽类蛋品</a></li>
-					<li><a href="/list/{{ 5 }}-{{ 1 }}-{{ 0 }}" class="vegetables">新鲜蔬菜</a></li>
-					<li><a href="/list/{{ 6 }}-{{ 1 }}-{{ 0 }}" class="ice">速冻食品</a></li>
+					<li><a href="/goods/list/{{ 1 }}-{{ 1 }}-{{ 0 }}/" class="fruit">新鲜水果</a></li>
+					<li><a href="/goods/list/{{ 2 }}-{{ 1 }}-{{ 0 }}/" class="seafood">海鲜水产</a></li>
+					<li><a href="/goods/list/{{ 3 }}-{{ 1 }}-{{ 0 }}/" class="meet">猪牛羊肉</a></li>
+					<li><a href="/goods/list/{{ 4 }}-{{ 1 }}-{{ 0 }}/" class="egg">禽类蛋品</a></li>
+					<li><a href="/goods/list/{{ 5 }}-{{ 1 }}-{{ 0 }}/" class="vegetables">新鲜蔬菜</a></li>
+					<li><a href="/goods/list/{{ 6 }}-{{ 1 }}-{{ 0 }}/" class="ice">速冻食品</a></li>
 				</ul>
 			</div>
 			<ul class="navlist fl">
@@ -76,7 +77,7 @@
 	<div class="breadcrumb">
 		<a href="#">全部分类</a>
 		<span>></span>
-		<a href="/goods/list/{{ goodstype.id }}-{{ 1 }}-{{ 0 }}">新鲜水果{{ goodstype.title }}</a>
+		<a href="/goods/list/{{ goodstype.id }}-{{ 1 }}-{{ 0 }}/">新鲜水果{{ goodstype.title }}</a>
 	</div>
 
 	<div class="goods_detail_con clearfix">
@@ -95,8 +96,10 @@
 					<a href="javascript:add();" class="add fr">+</a>
 					<a href="javascript:minus();" class="minus fr">-</a>
 				</div>
+                <div class="num_name fl">&nbsp;&nbsp;&nbsp;&nbsp;库 存：{{ goods.stock }}</div>
 			</div>
-			<div class="total">总价：<em>{{ goods.gprice }}元</em></div>
+			<div class="total">总价：<em id="total">{{ goods.gprice }}元</em></div>
+
 			<div class="operate_btn">
 				<a href="javascript:;" class="buy_btn">立即购买</a>
 				<a href="javascript:;" class="add_cart" id="add_cart">加入购物车</a>
