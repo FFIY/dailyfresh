@@ -24,10 +24,11 @@ def add(request,goods_id, count):
         cart = carts[0]
         cart.count = cart.count + count
     else:
-        cart = CartInfo.objects.create(user_id=username,goods_id=goods_id)
+        cart = CartInfo.objects.create(user_id=username,goods_id=goods_id,count=count)
     cart.save()
-
-    # 如果是ajax请求
+    # print('购物车')
+    # print(cart.user,cart.goods)
+    # 如果是ajax请求,不跳转
     if request.is_ajax():
         count = CartInfo.objects.filter(user_id=username).count()
         return JsonResponse({'count':count})
@@ -40,7 +41,18 @@ def edit(request, cart_id, count):
         cart = CartInfo.objects.get(pk= int(cart_id))
         count1 = cart.count=int(count)
         cart.save()
+        data = {'ok': 0}
     except Exception as e:
         data = {'ok':count1}
     return JsonResponse(data)
 
+@userlogin.login
+def delete(request,cart_id):
+    try:
+        print('delete',cart_id)
+        cart = CartInfo.objects.get(id=cart_id)
+        cart.delete()
+        data = {'ok':1}
+    except Exception as e:
+        data = {'ok':0}
+    return JsonResponse(data)

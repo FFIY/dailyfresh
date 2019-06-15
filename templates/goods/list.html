@@ -38,8 +38,8 @@
 				<ul>
                     {% for new in news %}
                         <li>
-                            <a href="/goods/{{ new.id }}/"><img src="/static/{{ new.gpic }}" alt=""></a>
-                            <h4><a href="/goods/{{ new.id }}/"></a>{{ new.gtitle }}</h4>
+                            <a href="/goods/detail/{{ new.id }}/"><img src="/static/{{ new.gpic }}" alt=""></a>
+                            <h4><a href="/goods/detail/{{ new.id }}/"></a>{{ new.gtitle }}</h4>
                             <div class="price">￥{{ new.gprice }}</div>
                         </li>
                     {% endfor %}
@@ -75,8 +75,8 @@
 
                 {% for g in page %}
                     <li>
-                        <a href="{{ g.id }}"><img src="/static/{{ g.gpic }}"></a>
-                        <h4><a href="{{ g.id }}"></a>{{ g.gtitle }}</h4>
+                        <a href="/goods/detail/{{ g.id }}/"><img src="/static/{{ g.gpic }}"></a>
+                        <h4><a href="/goods/detail/{{ g.id }}/"></a>{{ g.gtitle }}</h4>
                         <div class="operate">
                             <span class="prize">￥{{ g.gprice }}</span>
                             <span class="unit">{{ g.guntil }}</span>

@@ -53,7 +53,13 @@ def login(request):
         if users:
             s1 = hashlib.sha1(pwd.encode('utf-8'))
             if s1.hexdigest() == users[0].upassword:
-                red = HttpResponseRedirect('/user/info/')
+                print('已经登录',request.COOKIES)
+                if request.COOKIES.get('url',''):
+                    # 如果已经录返回之前的页面
+                    print('req url',request.COOKIES.get('url'))
+                    red = HttpResponseRedirect(request.COOKIES.get('url'))
+                else:
+                    red = HttpResponseRedirect('/user/info/')
                 if int(remember):
                     red.set_cookie('uname', uname,max_age = 60*60*24*30)
                     # red.set_cookie('user_id', uname,max_age = 60*60*24*30)

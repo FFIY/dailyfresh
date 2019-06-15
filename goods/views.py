@@ -28,6 +28,7 @@ def index(request):
 
 
 def detail(request, goodsid):
+    print(request.headers.get('Referer'))
     goods = GoodInfo.objects.get(id=goodsid)
     goods.gclick += 1
     goods.save()

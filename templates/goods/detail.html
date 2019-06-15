@@ -1,53 +1,18 @@
 {% extends 'base_goods.html' %}
+{% block search %}
+    <div class="search_bar clearfix">
+		<a href="/goods/" class="logo fl"><img src="/static/images/logo.png"></a>
+		<div class="search_con fl">
+			<input type="text" class="input_text fl" name="" placeholder="搜索商品">
+			<input type="button" class="input_btn fr" name="" value="搜索">
+		</div>
+		<div class="guest_cart fr">
+			<a href="cart.html" class="cart_name fl">我的购物车</a>
+			<div class="goods_count fl" id="show_count">1</div>
+		</div>
+	</div>
 
-
-{% block head %}
-    <script>
-        function add(){
-            num = parseInt($('.num_show').val());
-            $('.num_show').val(num+1);
-            $('.num_show').blur();
-        }
-
-        function minus(){
-            num = parseInt($('.num_show').val());
-            if (num < 1){
-                return ;
-            }
-            $('.num_show').val(num-1);
-            $('.num_show').blur();
-        }
-
-        $(function (){
-           $('.num_show').blur(function (){
-               num = parseInt($('.num_show').val());
-               if (num < 1){
-                    num = 1;
-                }
-               price = parseFloat($('#gprice em').text());
-               $('.num_show').val(num);
-               total = num * price;
-               $('#total').text(total.toFixed(2)+'元')
-;           })
-        });
-        
-
-    </script>
- {% endblock head %}
-{#{% block search %}#}
-{#    <div class="search_bar clearfix">#}
-{#		<a href="index.html" class="logo fl"><img src="images/logo.png"></a>#}
-{#		<div class="search_con fl">#}
-{#			<input type="text" class="input_text fl" name="" placeholder="搜索商品">#}
-{#			<input type="button" class="input_btn fr" name="" value="搜索">#}
-{#		</div>#}
-{#		<div class="guest_cart fr">#}
-{#			<a href="cart.html" class="cart_name fl">我的购物车</a>#}
-{#			<div class="goods_count fl" id="show_count">1</div>#}
-{#		</div>#}
-{#	</div>#}
-{#    #}
-{#{% endblock search %}#}
+{% endblock search %}
 
 {% block main_con %}
     <div class="navbar_con">
@@ -102,7 +67,7 @@
 
 			<div class="operate_btn">
 				<a href="javascript:;" class="buy_btn">立即购买</a>
-				<a href="javascript:;" class="add_cart" id="add_cart">加入购物车</a>
+				<a href="javascript:;" class="add_cart"  id="add_cart" goodsid="{{ goods.id }}">加入购物车</a>
 			</div>
 		</div>
 
@@ -145,38 +110,112 @@
 
 	<div class="add_jump"></div>
 
-	<script type="text/javascript" src="/static/js/jquery-1.9.1.min.js"></script>
+
 	<script type="text/javascript">
-		var $add_x = $('#add_cart').offset().top;
-		var $add_y = $('#add_cart').offset().left;
 
-		var $to_x = $('#show_count').offset().top;
-		var $to_y = $('#show_count').offset().left;
+        var $add_x = $('#add_cart').offset().top;
+        var $add_y = $('#add_cart').offset().left;
 
-		$(".add_jump").css({'left':$add_y+80,'top':$add_x+10,'display':'block'})
-		$('#add_cart').click(function(){
-		    // 判断是否登录
-            if($('.login_btn').text().indexOf('登录') >=0){
-                alert('请先登录再购买')
-                location.href('/user/login/')
-                return ;
-            }
-            // 动画
-			$(".add_jump").stop().animate({
-				'left': $to_y+7,
-				'top': $to_x+7},
-				"fast", function() {
-					$(".add_jump").fadeOut('fast',function(){
-						$('#show_count').html(2);
-					});
+        var $to_x = $('#show_count').offset().top;
+        var $to_y = $('#show_count').offset().left;
 
-			});
-            // 异步
+        {#console.log($add_x,$add_y,$to_x,$to_y)#}
+        // 增加数量
+        function add(){
             num = parseInt($('.num_show').val());
-            $.get('/cart/add/{{ goods.id }}-'+num+'/',function(data){
-                $('#show_count').text(data.count);
-            });
-		});
+            $('.num_show').val(num+1);
+            $('.num_show').blur();
+        }
+        // 减少数量
+        function minus(){
+            num = parseInt($('.num_show').val());
+            if (num <= 1){
+                return
+            }
+            $('.num_show').val(num-1);
+            $('.num_show').blur();
+        }
+
+        $(function () {
+
+
+		    $(".add_jump").css({'left':$add_y+80,'top':$add_x+10,'display':'block'});
+		    {#$(".add_jump").css({'left':984.5+80,'top':554+10,'display':'block'});#}
+
+            $('.num_show').blur(function (){
+               num = parseInt($('.num_show').val());
+               if (num < 1){
+                    num = 1;
+                }
+               price = parseFloat($('#gprice em').text());
+               $('.num_show').val(num);
+               total = num * price;
+               $('#total').text(total.toFixed(2)+'元')
+;           });
+
+        });
+
+        {#$('.add_cart').click(function(){#}
+		 {#   // 判断是否登录#}
+        {#    if($('.login_btn').text().indexOf('登录') >=0){#}
+        {#        alert('请先登录再购买');#}
+        {#        location.href='/user/login/';#}
+        {#        return ;#}
+        {#    }#}
+        {#    $('.add_jump').css('display','block');#}
+        {##}
+        {#    // 动画#}
+			{#$(".add_jump").stop().animate({#}
+			{#	'left': $to_y+7,#}
+			{#	'top': $to_x+7},#}
+			{#	"fast", function() {#}
+			{#		$(".add_jump").fadeOut("fast",function(){#}
+						{#$('#show_count').html(2);#}
+        {##}
+			{#		 });#}
+        {##}
+        {#            $(".add_jump").css('left','1064.5px').css('top','564px');#}
+			{# });#}
+        {#    // 异步#}
+        {#    var num = parseInt($('.num_show').val());#}
+        {#    console.log($('.num_show').val());#}
+        {#    $.get('/cart/add/{{ goods.id }}-'+num+'/',function(data){#}
+        {#        $('#show_count').text(data.count);#}
+        {#    });#}
+        {# });#}
+        $('.add_cart').click(function () {
+
+                var num = $('.num_show').val();
+                var goodsid = $(this).attr("goodsid");
+
+                $('.add_jump').css('display','block');
+
+                // 动画
+                $(".add_jump").stop().animate({
+                    'left': $to_y+7,
+                    'top': $to_x+7},
+                    "fast", function() {
+                        $(".add_jump").fadeOut("fast",function(){
+                            $('#show_count').html(2);
+
+                         });
+
+                        $(".add_jump").css({'left':$add_y+80,'top':$add_x+10});
+                });
+
+                $.get("/cart/add/"+goodsid+'-'+num,function (data) {
+                    if (data.count){
+
+                        {#alert(data.count);#}
+                        $('#show_count').text(data.count);
+                    }else{
+                        alert("请先登录");
+                        window.location.replace('/user/login/')
+                    }
+                });
+         });
+
+
 	</script>
 {% endblock main_con %}
 
