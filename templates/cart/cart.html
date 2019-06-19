@@ -20,15 +20,18 @@
             total1 = 0;
             total_count = 0;
             $('.col07').each(function(){
-               // 获取数量
-               count = $(this).prev().find('input').val();
-               // 单价
-                price = $(this).prev().prev().text();
-                // 小计
-                total0 = parseFloat(count)* parseFloat(price);
-                $(this).text(total0.toFixed(2));
-                total1 += total0;
-                total_count ++;
+                if($(this).prevAll('.col01').find('input').prop('checked')){
+                    // 获取数量
+                   count = $(this).prev().find('input').val();
+                   // 单价
+                    price = $(this).prev().prev().text();
+                    // 小计
+                    total0 = parseFloat(count)* parseFloat(price);
+                    $(this).text(total0.toFixed(2));
+                    total1 += total0;
+                    total_count ++;
+                }
+
             });
             //显示总计
             $('#total').text(total1.toFixed(2));
@@ -41,6 +44,7 @@
                 state = $(this).prop('checked');
                 console.log(state);
                 $(':checkbox:not(#check_all)').prop('checked',state);
+                total();
             });
             // 选择
             $(':checkbox:not(#check_all)').click(function () {
@@ -51,6 +55,7 @@
                 }else{
                     $('#check_all').prop('checked',false);
                 }
+                total();
             });
             // 增加数量
             $('.add').click(function () {
@@ -61,6 +66,7 @@
                     return ;
                 }
                 txt.val(num).blur();
+                total();
             });
             // 减少数量
             $('.minus').click(function () {
@@ -71,6 +77,7 @@
                     return;
                 }
                 var n =txt.val(num).blur();
+                total();
             });
             // 手动改数量
             $('.num_show').blur(function () {
@@ -96,8 +103,43 @@
                        $(this).val(data.ok);
                    }
                 });
+                total();
             });
 
+            // 提交结算
+            $('.settlements .col04 a').click(function () {
+                var cart_ids = [];
+                var pricelist = [];
+                $('.cart_list_td').each(function () {
+                    console.log(this);
+                    if($(this).find('.col01 input').prop('checked')){
+                        var cartid = $(this).attr('id');
+                        {#var goodscount = $(this).find('.num_show').prop('value');#}
+                        {#pricelist.push(goodscount);#}
+
+                        cart_ids.push(cartid)
+                    }
+
+                });
+                $('input[name="csrfmiddlewaretoken"]').val();
+                $.post('/order/addorder/',
+                    data={
+                        'cart_ids[]':cart_ids,
+                        'csrfmiddlewaretoken':$('input[name="csrfmiddlewaretoken"]').val(),
+                        'total':$('#total').text()
+                    },function (data) {
+                        console.log(data);
+                        if (data.indexOf('全部订单')){
+                            console.log(13241)
+                            location.href='/user/order/'
+                        }else{
+                            location.href='/cart/'
+                        }
+                        {#$('html').html(data);#}
+
+                    }
+                );
+            });
 
             total();
         });
@@ -140,6 +182,7 @@
 		<li class="col01"><input id="check_all" type="checkbox" name="" checked=""></li>
 		<li class="col02">全选</li>
 		<li class="col03">合计(不含运费)：<span>¥</span><em id="total"></em><br>共计<b class="total_count"></b>件商品</li>
-		<li class="col04"><a href="place_order.html">去结算</a></li>
+		<li class="col04"><a href="javascprit:;">去结算</a></li>
+        {% csrf_token %}
 	</ul>
 {% endblock main_con %}

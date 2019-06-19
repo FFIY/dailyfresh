@@ -5,15 +5,24 @@ from user_manage import userlogin
 from django.db import transaction
 from datetime import datetime
 from decimal import Decimal
-
+from user_manage.models import UserInfo
 
 # Create your views here.
 
 
 @userlogin.login
-def order(request):
-
-    context = {}
+def order(request, orderid):
+    print(orderid)
+    userid = request.session['user_id']
+    try:
+        orderobj = OrderInfo.objects.get(oid=orderid)
+    except Exception as e:
+        print(e)
+        orderobj = None
+        orderobj = 's'
+    # order_detail = orderobj.orderdetailinfo_set
+    # context = {'userid':userid, 'order_detail':order_detail, }
+    context = {'userid':userid, 'orderinfo':orderobj}
     return render(request, 'order/place_order.html',context)
 
 
@@ -21,21 +30,25 @@ def order(request):
 @transaction.atomic()
 @userlogin.login
 def order_handle(request):
+    # 设置事务起点
     tran_id = transaction.savepoint()
     # 接收购物车编号
-    cart_ids = request.POST.get('cart_ids')
+    cart_ids = request.POST.getlist('cart_ids[]')
+    print(request.POST)
+    print('cart_ids',cart_ids)
     try:
         # 创建订单
         order = OrderInfo()
         now = datetime.now()
         uid = request.session['user_id']
-        order.oid = '%s%d' % (now.strftime('%Y%m%d%H%M%S'), uid)
+        order.oid = '%s%s' % (now.strftime('%Y%m%d%H%M%S'), uid)
         order.user_id = uid
         order.odate = now
         order.ototal = Decimal(request.POST.get('total'))
+        order.oaddress= UserInfo.objects.values('addressee__r_adress').filter(uname=uid)[0]['addressee__r_adress']
         order.save()
         # 创建订单详情
-        cart_idsl = [int(item) for item in cart_ids.split(',')]
+        cart_idsl = [int(item) for item in cart_ids]
         for i in cart_ids:
             detail = OrderDetailInfo()
             detail.order = order
@@ -61,6 +74,7 @@ def order_handle(request):
     except Exception as e:
         print('======================%s' % e)
         transaction.savepoint_rollback(tran_id)
+    print('成功了')
     return redirect('/user/order/')
 
 

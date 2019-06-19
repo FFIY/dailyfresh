@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from .models import *
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-
+from cart.models import CartInfo
 
 # Create your views here.
 
@@ -22,13 +22,14 @@ def index(request):
 
     context = {'title': '首页', 'locals': locals(), 't1': typeone, 't1h': typeone_h, 't2': typetwo, 't2h': typetwo_h,
                't3': typethree, 't3h': typethree_h, 't4': typefour, 't4h': typefour_h, 't5': typefive,
-               't5h': typefive_h, 't6h': typesix_h,'t6':typesix
+               't5h': typefive_h, 't6h': typesix_h,'t6':typesix,
                }
     return render(request, 'goods/index.html', context)
 
 
 def detail(request, goodsid):
     print(request.headers.get('Referer'))
+    cart_length  = CartInfo.objects.filter(user_id=request.session['user_id']).count()
     goods = GoodInfo.objects.get(id=goodsid)
     goods.gclick += 1
     goods.save()
@@ -50,6 +51,7 @@ def detail(request, goodsid):
 
     context = {'title':goods.gtype.title,'goods':goods,
                'goodsid':goodsid,'news':news,
+               'cart_length':cart_length,
                }
     response = render(request, 'goods/detail.html', context)
     response.set_cookie('goodsids',goods_ids)

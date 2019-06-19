@@ -31,8 +31,9 @@
 		<dl>
 			<dt>寄送到：</dt>
 			<dd><input type="radio" name="" checked="">北京市 海淀区 东北旺西路8号中关村软件园 （李思 收） 182****7528</dd>
+			<dd><input type="radio" name="" checked="">{{ orderinfo.oaddress }}北京市 海淀区 东北旺西路8号中关村软件园 （李思 收） 182****7528</dd>
 		</dl>
-		<a href="user_center_site.html" class="edit_site">编辑收货地址</a>
+		<a href="/user/site/" class="edit_site">编辑收货地址</a>
 
 	</div>
 
@@ -60,6 +61,18 @@
 			<li class="col04">数量</li>
 			<li class="col05">小计</li>
 		</ul>
+
+        {% for g in orderinfo.orderdetailinfo_set %}
+            <ul class="goods_list_td clearfix">
+                <li class="col01">{{ forloop.counter }}</li>
+                <li class="col02"><img src="/static/{{ g.gpic }}"></li>
+                <li class="col03">{{ g.gtitle }}</li>
+                <li class="col04">{{ g.guntil }}</li>
+                <li class="col05">{{ g.gprice }}元</li>
+                <li class="col06">{{ g.count }}</li>
+                <li class="col07"><em></em>元</li>
+		    </ul>
+        {% endfor %}
 		<ul class="goods_list_td clearfix">
 			<li class="col01">1</li>
 			<li class="col02"><img src="images/goods/goods012.jpg"></li>
@@ -77,6 +90,15 @@
 			<li class="col05">16.80元</li>
 			<li class="col06">1</li>
 			<li class="col07">16.80元</li>
+		</ul>
+        <ul class="goods_list_td clearfix">
+			<li class="col01">1</li>
+			<li class="col02"><img src="images/goods/goods012.jpg"></li>
+			<li class="col03">奇异果</li>
+			<li class="col04">500g</li>
+			<li class="col05">25.80元</li>
+			<li class="col06">1</li>
+			<li class="col07">25.80元</li>
 		</ul>
 	</div>
 

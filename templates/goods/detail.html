@@ -7,8 +7,8 @@
 			<input type="button" class="input_btn fr" name="" value="搜索">
 		</div>
 		<div class="guest_cart fr">
-			<a href="cart.html" class="cart_name fl">我的购物车</a>
-			<div class="goods_count fl" id="show_count">1</div>
+			<a href="/cart/" class="cart_name fl">我的购物车</a>
+			<div class="goods_count fl" id="show_count">{{ cart_length }}</div>
 		</div>
 	</div>
 
@@ -61,7 +61,7 @@
 					<a href="javascript:add();" class="add fr">+</a>
 					<a href="javascript:minus();" class="minus fr">-</a>
 				</div>
-                <div class="num_name fl">&nbsp;&nbsp;&nbsp;&nbsp;库 存：{{ goods.stock }}</div>
+                <div class="f1" style="margin-top:18px;display: inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;库 存：{{ goods.stock }}</div>
 			</div>
 			<div class="total">总价：<em id="total">{{ goods.gprice }}元</em></div>
 
